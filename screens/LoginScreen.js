@@ -19,7 +19,7 @@ const LoginScreen = () => {
                 style={styles.input}
                 onChangeText={onChangeText}
                 value={text}
-                placeholder="useless placeholder"
+                placeholder="Entrez votre mot de passe"
             />
             <Button title="SE CONNECTER" onPress={() =>
                 alert('Bienvenue')
@@ -36,6 +36,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
     },
 });
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
-const RegisterScreen2 = ({ navigation }) => {
+const RegisterPart2 = ({ navigation }) => {
 
     const [text, onChangeText] = useState(null);
 
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegisterScreen2;
+export default RegisterPart2;

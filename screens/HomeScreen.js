@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
@@ -10,7 +9,7 @@ const HomeScreen = ({ navigation }) => {
             }
             />
             <Button title="Inscription" onPress={() =>
-                navigation.navigate('RegisterPart1')
+                navigation.navigate('Inscription')
             }
             />
         </View>

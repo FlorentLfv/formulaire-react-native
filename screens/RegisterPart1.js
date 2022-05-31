@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
-const RegisterScreen1 = ({ navigation }) => {
-    
+const RegisterPart1 = ({ navigation }) => {
+
     const [text, onChangeText] = useState(null);
 
     return (
@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegisterScreen1;
+export default RegisterPart1;
 
 // Regex mail: /^[\w\-\.]+@([\w-]+\.)+[\w\-]{2,4}$/gm
