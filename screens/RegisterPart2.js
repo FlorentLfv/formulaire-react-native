@@ -1,47 +1,91 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { useForm } from "react-hook-form";
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import { useForm, Controller } from "react-hook-form";
 import RNPickerSelect from 'react-native-picker-select';
 import DatePicker from 'react-native-date-picker';
 
 const RegisterPart2 = ({ navigation }) => {
 
-    const [text, onChangeText] = useState(null);
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            civility: '',
+            firstname: '',
+            lastname: '',
+            birthdate: '',
+        }
+    });
+    const onSubmit = data => console.log(data);
 
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
 
     return (
         <View style={styles.container}>
-            <Text>Civilité</Text>
-            <RNPickerSelect
-                onValueChange={(value) => console.log(value)}
-                placeholder='Choisissez votre civilité'
-                items={[
-                    { label: 'Monsieur', value: 'mister' },
-                    { label: 'Madame', value: 'miss' },
-                    { label: 'Non binaire', value: 'non-binary' },
-                ]}
+            {/* <Text style={styles.text}>Civilité</Text>
+            <Controller
+                control={control}
+                rules={{
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <RNPickerSelect
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        
+                        onValueChange={(value) => console.log(value)}
+                        placeholder={{
+                            label: 'Choisissez votre civilité',
+                            color: 'lightgrey',
+                        }}
+                        items={[
+                            { color: 'lightgrey', label: 'Monsieur', value: 'Mr.' },
+                            { color: 'lightgrey', label: 'Madame', value: 'Mme' },
+                            { color: 'lightgrey', label: 'Non binaire', value: 'Non-Binaire' },
+                        ]}
+                    />
+                )}
+                name='civility'
+            /> */}
+            {errors.civility && <Text style={styles.errorText}>Vous n'avez pas entré votre civilité</Text>}
+            <Text style={styles.text}>Prénom</Text>
+            <Controller
+                control={control}
+                rules={{
+                    required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Entrez votre prénom"
+                        style={styles.textInput}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+                name="firstname"
             />
-            <Text>Prénom</Text>
-            <TextInput
-                style={styles.textInput}
-                onChangeText={onChangeText}
-                value={text}
-                placeholder="Entrez votre prénom"
+            {errors.firstname && <Text style={styles.errorText}>Vous n'avez pas entré votre prénom</Text>}
+            <Text style={styles.text}>Nom</Text>
+            <Controller
+                control={control}
+                rules={{
+                    required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Entrez votre nom de famille"
+                        style={styles.textInput}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+                name="lastname"
             />
-            <Text>Nom</Text>
-            <TextInput
-                style={styles.textInput}
-                onChangeText={onChangeText}
-                value={text}
-                placeholder="Entrez votre nom"
-            />
-            {/* <>
-                <Text>Date de naissance</Text>
-                <TouchableOpacity onPress={() => setOpen(true)}>
-                    <Text>Ouvrir</Text>
-                </TouchableOpacity>
+            {errors.lastname && <Text style={styles.errorText}>Vous n'avez pas entré votre nom de famille</Text>}
+            {/* <Text style={styles.text}>Date de naissance</Text>
+            <>
+                <Button title="Open" onPress={() => setOpen(true)} />
                 <DatePicker
                     modal
                     open={open}
@@ -55,6 +99,8 @@ const RegisterPart2 = ({ navigation }) => {
                     }}
                 />
             </> */}
+            {errors.birthdate && <Text style={styles.errorText}>Vous n'avez pas entré votre date de naissance</Text>}
+            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
             <TouchableOpacity style={styles.button} title="TERMINÉ" onPress={() => navigation.navigate('Success')}>
                 <Text>TERMINÉ</Text>
             </TouchableOpacity>
@@ -65,15 +111,17 @@ const RegisterPart2 = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
     },
     textInput: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: 'orange',
         padding: 10,
+        backgroundColor: 'lightgrey',
     },
     button: {
         marginVertical: 10,
@@ -82,8 +130,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     select: {
-        color: 'black'
-    }
+        backgroundColor: 'white',
+    },
+    text: {
+        color: 'white',
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 20,
+    },
 });
 
 export default RegisterPart2;

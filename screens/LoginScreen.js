@@ -1,31 +1,61 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
+import { useForm, Controller } from "react-hook-form";
 
 const LoginScreen = ({ navigation }) => {
 
-    const [text, onChangeText] = useState(null);
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            mail: '',
+            password: '',
+        }
+    });
+    const onSubmit = data => console.log(data);
 
     return (
         <View style={styles.container}>
-            <Text>Email</Text>
-            <TextInput
-                style={styles.textInput}
-                onChangeText={onChangeText}
-                value={text}
-                placeholder="Entrez votre mail"
+            <Text style={styles.text}>Email</Text>
+            <Controller
+                control={control}
+                rules={{
+                    required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Entrez votre mail"
+                        style={styles.textInput}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+                name="mail"
             />
-            <Text>Mot de passe</Text>
-            <TextInput
-                style={styles.textInput}
-                onChangeText={onChangeText}
-                value={text}
-                placeholder="Entrez votre mot de passe"
+            {errors.mail && <Text>Vous n'avez pas entré votre mail</Text>}
+            <Text style={styles.text}>Mot de passe</Text>
+            <Controller
+                control={control}
+                rules={{
+                    required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Entrez votre mot de passe"
+                        style={styles.textInput}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+                name="password"
             />
-            <TouchableOpacity style={styles.button} onPress={() => alert('Bienvenue')}>
+            {errors.mail && <Text>Vous n'avez pas entré votre mot de passe</Text>}
+            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Informations')}>
                 <Text>SE CONNECTER</Text>
             </TouchableOpacity>
             <View style={styles.row}>
-                <Text>Pas encore inscrit ? </Text>
+                <Text style={styles.text}>Pas encore inscrit ? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Inscription')}>
                     <Text style={styles.clickableText}>Créer un compte</Text>
                 </TouchableOpacity>
@@ -37,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -49,6 +79,10 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10,
+        backgroundColor: 'lightgrey',
+    },
+    text: {
+        color: 'white',
     },
     button: {
         marginVertical: 10,
@@ -57,7 +91,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     clickableText: {
-        color: 'blue',
+        color: '#2da4ff',
     },
 });
 

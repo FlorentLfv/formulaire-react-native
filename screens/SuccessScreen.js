@@ -6,7 +6,7 @@ const SuccessScreen = ({ navigation }) => {
         <View style={styles.container}>
             <Image source={{ uri: 'https://icons-for-free.com/download-icon-complete+done+green+success+valid+icon-1320183462969251652_512.png' }} style={styles.image} />
             <Text style={styles.text}>Votre compte a été créé avec succès</Text>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Accueil')}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Informations')}>
                 <Text>TERMINÉ</Text>
             </TouchableOpacity>
         </View>
@@ -16,7 +16,7 @@ const SuccessScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         marginVertical: 30,
         fontSize: 25,
         textAlign: 'center',
+        color: 'white',
     },
     button: {
         backgroundColor: 'lightgrey',

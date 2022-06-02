@@ -7,78 +7,18 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const RegisterPart1 = ({ navigation }) => {
 
-    // constructor() {
-    //     super();
-    //     this.state = {
-    //         mail: '',
-    //         password: '',
-    //         passwordConfirmation: '',
-    //     }
-    // }
-    // submit()
-    // {
-    //     console.warn(this.state)
-    // }
-
-    // render() {
-    //     return (
-    //         <View>
-    //             <TextInput
-    //                 placeholder='Entrer mail'
-    //                 onChangeText={(text) => { this.setState({ mail: text }) }}
-    //                 style={{ borderWidth: 2, borderColor: 'black', margin: 20 }}
-    //             />
-    //             <TextInput
-    //                 placeholder='Entrer mot de passe'
-    //                 secureTextEntry={true}
-    //                 onChangeText={(text) => { this.setState({ password: text }) }}
-    //                 style={{ borderWidth: 2, borderColor: 'black', margin: 20 }}
-    //             />
-    //             <TextInput
-    //                 placeholder='Confirmer mot de passe'
-    //                 secureTextEntry={true}
-    //                 onChangeText={(text) => { this.setState({ passwordConfirmation: text }) }}
-    //                 style={{ borderWidth: 2, borderColor: 'black', margin: 20 }}
-    //             />
-    //             <Button title='submit' onPress={()=>{this.submit()}} />
-    //         </View>
-    //     )
-    //  }
-
     const { control, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            firstName: '',
-            lastName: ''
+            mail: '',
+            password: '',
+            passwordConfirmation: '',
         }
     });
     const onSubmit = data => console.log(data);
 
     return (
         <View style={styles.container}>
-            {/* <Text>Email</Text>
-            <TextInput
-                style={styles.textInput}
-                onChangeText={(text) => { setData({ mail: text }) }}
-                placeholder="Entrez votre mail"
-            />
-            <Text>Mot de passe</Text>
-            <TextInput
-                style={styles.textInput}
-                secureTextEntry={true}
-                onChangeText={(text) => { setData({ password: text }) }}
-                placeholder="Entrez votre mot de passe"
-            />
-            <Text>Confirmation du mot de passe</Text>
-            <TextInput
-                style={styles.textInput}
-                secureTextEntry={true}
-                onChangeText={(text) => { setData({ passwordConfirmation: text }) }}
-                placeholder="Entrez votre mot de passe"
-            />
-            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('RegisterPart2'); console.warn(data); }}>
-                <Text>SUIVANT</Text>
-                <Icon name='arrowright' style={styles.icon} />
-            </TouchableOpacity> */}
+            <Text style={styles.text}>Email</Text>
             <Controller
                 control={control}
                 rules={{
@@ -86,32 +26,56 @@ const RegisterPart1 = ({ navigation }) => {
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        pattern={['^[\w\-\.]+@([\w-]+\.)+[\w\-]{2,4}$']}
+                        placeholder="Entrez votre mail"
                         style={styles.textInput}
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
                     />
                 )}
-                name="firstName"
+                name="mail"
             />
-            {errors.firstName && <Text>This is required.</Text>}
-
+            {errors.mail && <Text style={styles.errorText}>Vous n'avez pas entré votre mail</Text> }
+            <Text style={styles.text}>Mot de passe</Text>
             <Controller
                 control={control}
                 rules={{
+                    required: true,
                     maxLength: 100,
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
+                        placeholder="Entrez votre mot de passe"
                         style={styles.textInput}
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
                     />
                 )}
-                name="lastName"
+                name="password"
             />
-<TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('RegisterPart2'); }}>
+            {errors.password && <Text style={styles.errorText}>Vous n'avez pas entré votre mot de passe</Text>}
+            <Text style={styles.text}>Confirmation du mot de passe</Text>
+            <Controller
+                control={control}
+                rules={{
+                    required: true,
+                    maxLength: 100,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        placeholder="Confirmez votre mot de passe"
+                        style={styles.textInput}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                    />
+                )}
+                name="passwordConfirmation"
+            />
+            {errors.passwordConfirmation && <Text style={styles.errorText}>Vous n'avez pas confirmé votre mot de passe</Text>}
+            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('RegisterPart2'); }}>
                 <Text>SUIVANT</Text>
                 <Icon name='arrowright' style={styles.icon} />
             </TouchableOpacity>
@@ -124,15 +88,17 @@ const RegisterPart1 = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#212121',
         alignItems: 'center',
         justifyContent: 'center',
     },
     textInput: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
+        borderWidth: 2,
+        borderColor: 'orange',
         padding: 10,
+        backgroundColor: 'lightgrey',
     },
     button: {
         flexDirection: 'row',
@@ -147,7 +113,13 @@ const styles = StyleSheet.create({
         fontSize: 25,
         marginLeft: 5,
     },
-
+    text: {
+        color: 'white',
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 20,
+    },
 });
 
 export default RegisterPart1;
