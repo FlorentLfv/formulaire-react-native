@@ -14,7 +14,10 @@ const RegisterPart2 = ({ navigation }) => {
             birthdate: '',
         }
     });
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        navigation.navigate('Success');
+        console.log(data);
+    }
 
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
@@ -100,8 +103,7 @@ const RegisterPart2 = ({ navigation }) => {
                 />
             </> */}
             {errors.birthdate && <Text style={styles.errorText}>Vous n'avez pas entré votre date de naissance</Text>}
-            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-            <TouchableOpacity style={styles.button} title="TERMINÉ" onPress={() => navigation.navigate('Success')}>
+            <TouchableOpacity style={styles.button} title="TERMINÉ" onPress={handleSubmit(onSubmit)}>
                 <Text>TERMINÉ</Text>
             </TouchableOpacity>
         </View>

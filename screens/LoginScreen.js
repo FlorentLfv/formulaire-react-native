@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
+import { registerAsset } from 'react-native-web/dist/cjs/modules/AssetRegistry';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -10,7 +11,10 @@ const LoginScreen = ({ navigation }) => {
             password: '',
         }
     });
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+            navigation.navigate('Informations');
+            console.log(data);
+    }
 
     return (
         <View style={styles.container}>
@@ -18,7 +22,14 @@ const LoginScreen = ({ navigation }) => {
             <Controller
                 control={control}
                 rules={{
-                    required: true,
+                    required: {
+                        value: true,
+                        message: 'Vous n\'avez pas entré votre adresse mail'
+                    },
+                    pattern: {
+                        value: /^[\w\-\.]+@([\w-]+\.)+[\w\-]{2,4}$/gm,
+                        message: 'Votre adresse mail n\'est pas au bon format'
+                    }
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
@@ -31,16 +42,21 @@ const LoginScreen = ({ navigation }) => {
                 )}
                 name="mail"
             />
-            {errors.mail && <Text>Vous n'avez pas entré votre mail</Text>}
+            {errors.mail && <Text style={styles.errorText}>{errors.mail && errors.mail.message}</Text>}
             <Text style={styles.text}>Mot de passe</Text>
             <Controller
                 control={control}
                 rules={{
-                    required: true,
+                    required: {
+                        value: true,
+                        message: 'Vous n\'avez pas entré votre mot de passe',
+                        maxLength: 100,
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         placeholder="Entrez votre mot de passe"
+                        secureTextEntry= {true}
                         style={styles.textInput}
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -49,9 +65,8 @@ const LoginScreen = ({ navigation }) => {
                 )}
                 name="password"
             />
-            {errors.mail && <Text>Vous n'avez pas entré votre mot de passe</Text>}
-            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Informations')}>
+            {errors.password && <Text style={styles.errorText}>{errors.password && errors.password.message}</Text>}
+            <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text>SE CONNECTER</Text>
             </TouchableOpacity>
             <View style={styles.row}>
@@ -83,6 +98,10 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'white',
+    },
+    errorText: {
+        color: 'red',
+        marginBottom: 20,
     },
     button: {
         marginVertical: 10,

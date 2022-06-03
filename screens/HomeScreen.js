@@ -6,7 +6,6 @@ const HomeScreen = ({ navigation }) => {
             <Image style={styles.logo} source={{uri: 'http://blastzone.fr/wp-content/uploads/2021/09/84782477_233092137709314_5115980337926635520_n.png'}} />
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Connexion')}>
                 <Text>SE CONNECTER</Text>
-
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Inscription')}>
                 <Text>S'INSCRIRE</Text>

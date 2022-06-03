@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Button } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -14,19 +14,28 @@ const RegisterPart1 = ({ navigation }) => {
             passwordConfirmation: '',
         }
     });
-    const onSubmit = data => console.log(data);
+    const onSubmit = data => {
+        navigation.navigate('RegisterPart2');
+        console.log(data);
+    };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Email</Text>
+            <Text style={styles.text}>Mail</Text>
             <Controller
                 control={control}
                 rules={{
-                    required: true,
+                    required:{
+                        value: true,
+                        message: 'Vous n\'avez pas entré votre adresse mail'
+                    },
+                    pattern:{
+                        value: /^[\w\-\.]+@([\w-]+\.)+[\w\-]{2,4}$/gm,
+                        message: 'Votre adresse mail n\'est pas au bon format'
+                    }
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        pattern={['^[\w\-\.]+@([\w-]+\.)+[\w\-]{2,4}$']}
                         placeholder="Entrez votre mail"
                         style={styles.textInput}
                         onBlur={onBlur}
@@ -36,17 +45,21 @@ const RegisterPart1 = ({ navigation }) => {
                 )}
                 name="mail"
             />
-            {errors.mail && <Text style={styles.errorText}>Vous n'avez pas entré votre mail</Text> }
+            {errors.mail && <Text style={styles.errorText}>{errors.mail && errors.mail.message}</Text> }
             <Text style={styles.text}>Mot de passe</Text>
             <Controller
                 control={control}
                 rules={{
-                    required: true,
-                    maxLength: 100,
+                    required: {
+                        value: true,
+                        message: 'Vous n\'avez pas entré votre mot de passe',
+                        maxLength: 100,
+                    },
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         placeholder="Entrez votre mot de passe"
+                        secureTextEntry= {true}
                         style={styles.textInput}
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -55,17 +68,25 @@ const RegisterPart1 = ({ navigation }) => {
                 )}
                 name="password"
             />
-            {errors.password && <Text style={styles.errorText}>Vous n'avez pas entré votre mot de passe</Text>}
+            {errors.password && <Text style={styles.errorText}>{errors.password && errors.password.message}</Text>}
             <Text style={styles.text}>Confirmation du mot de passe</Text>
             <Controller
                 control={control}
                 rules={{
-                    required: true,
+                    required: {
+                        value: true,
+                        message: 'Vous n\'avez pas confirmé votre mot de passe' 
+                    },
+                    pattern: {
+                        message: 'Votre mot de passe ne correspond pas'
+                    },
                     maxLength: 100,
                 }}
+                
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
                         placeholder="Confirmez votre mot de passe"
+                        secureTextEntry= {true}
                         style={styles.textInput}
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -74,12 +95,11 @@ const RegisterPart1 = ({ navigation }) => {
                 )}
                 name="passwordConfirmation"
             />
-            {errors.passwordConfirmation && <Text style={styles.errorText}>Vous n'avez pas confirmé votre mot de passe</Text>}
-            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('RegisterPart2'); }}>
+            {errors.passwordConfirmation && <Text style={styles.errorText}>{errors.passwordConfirmation && errors.passwordConfirmation.message}</Text>}
+            <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text>SUIVANT</Text>
                 <Icon name='arrowright' style={styles.icon} />
             </TouchableOpacity>
-            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
         </View>
     )
 
